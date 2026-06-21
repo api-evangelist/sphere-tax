@@ -1,0 +1,103 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Sphere
+providerId: sphere-tax
+created: '2026-06-21'
+modified: '2026-06-21'
+reconciled: false
+tags:
+- Tax
+- Sales Tax
+- VAT
+- GST
+- Compliance
+- Plans
+description: >-
+  Sphere prices tax compliance as a flat fee per active region per month rather
+  than as per-API-call usage. The Starter plan is self-serve at a published flat
+  fee per region per month for fewer than ten regions; the Growth plan is custom
+  (sales-led) for ten or more regions and adds a dedicated account manager, a tax
+  team on demand, and 24/7 Slack support. A flat per-transaction fee applies once
+  usage exceeds 50,000 transactions across active regions. Some jurisdictions
+  charge registration fees that Sphere debits to the account. Sphere states there
+  are no implementation fees and no additional one-off costs.
+notes: >-
+  Pricing is sales-led for the Growth tier and custom amounts are not public, so
+  this artifact is not reconciled. Verify the current per-region price, the
+  transaction overage fee, and jurisdiction registration fees on the Sphere
+  pricing page during reconciliation.
+sources:
+- https://www.getsphere.com/pricing
+- https://www.getsphere.com/
+- https://docs.getsphere.com/
+plans:
+- id: sphere-starter
+  name: Starter
+  type: subscription
+  description: >-
+    Self-serve flat fee per active region per month for organizations operating
+    in fewer than ten regions. Includes monitoring, registration, calculation,
+    and filing plus back tax calculations.
+  entries:
+  - label: Per Region
+    name: per_region
+    type: flat
+    metric: region
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $100 per region per month (< 10 regions)
+    userMultiplied: false
+  - label: Transaction Overage
+    name: transaction_overage
+    type: usage
+    metric: transactions
+    limit: 50000
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: flat fee per transaction above 50,000 across active regions
+    userMultiplied: false
+  - label: Jurisdiction Registration Fees
+    name: registration_fees
+    type: passthrough
+    metric: registrations
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: pass-through, debited to account where a jurisdiction charges a fee
+    userMultiplied: false
+  elements:
+  - name: Monitoring
+  - name: Registration
+  - name: Calculation
+  - name: Filing and Remittance
+  - name: Back Tax Calculations
+- id: sphere-growth
+  name: Growth
+  type: enterprise
+  description: >-
+    Custom, sales-led plan for organizations operating in ten or more regions.
+    Includes everything in Starter plus a dedicated account manager, a tax team
+    on demand, and 24/7 Slack support.
+  entries:
+  - label: Custom Agreement
+    name: custom
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: contact sales (10+ regions)
+    userMultiplied: false
+  elements:
+  - name: Dedicated Account Manager
+  - name: Tax Team On Demand
+  - name: 24/7 Slack Support
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

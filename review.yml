@@ -1,0 +1,102 @@
+aid: sphere-tax
+name: Sphere
+review:
+  question: Which "Sphere" does this repo document, and does it expose a documented public REST API for tax compliance?
+  answer: true
+  date: '2026-06-21'
+  reviewer: API Evangelist
+  disambiguationResolved: true
+disambiguation:
+  documented:
+    name: Sphere (getsphere.com)
+    legalContext: AI-powered global indirect tax compliance platform; San Francisco, CA; Y Combinator; raised a $21M Series A led by Andreessen Horowitz; founder Nicholas Rudder.
+    website: https://www.getsphere.com/
+    docs: https://docs.getsphere.com/
+    summary: >-
+      This repo documents the sales-tax / VAT / GST compliance company at
+      getsphere.com. It has a real, developer-first REST API. The tax
+      calculation and transaction export endpoints are confirmed in the public
+      documentation at docs.getsphere.com, authenticated with an X-API-KEY
+      header against the base URL https://server.getsphere.com.
+  notToBeConfusedWith:
+  - name: Sphere Commerce / Sphere Payments (spherecommerce.com)
+    note: A payments and merchant-services company; not the tax compliance API documented here.
+  - name: Sphere (healthcare payments, formerly TrustCommerce / Health iPASS)
+    note: Healthcare payment and engagement platform; unrelated to indirect tax compliance.
+  - name: Sphere / various crypto and "Sphere" Web3 projects
+    note: Unrelated blockchain/crypto products that share the Sphere name.
+  - name: Azure Sphere (Microsoft)
+    note: Microsoft IoT security product with its own Public API; unrelated.
+  - name: Sphere Engine
+    note: Programming/judge execution API; unrelated.
+findings:
+  summary: |
+    Sphere (getsphere.com) is the sales-tax compliance company and it exposes a
+    real, documented public REST API. Two endpoint families are confirmed in
+    the public docs: tax calculation (POST /tax_api/calculate_tax) and
+    asynchronous transaction export (POST /tax_api/exports, GET
+    /tax_api/exports/{job_id}, POST /tax_api/exports/{job_id}/cancel). The base
+    URL is https://server.getsphere.com and authentication uses an API key in
+    the X-API-KEY request header (NOT a Bearer Authorization header). Other
+    advertised capabilities - nexus monitoring, registration, filing and
+    remittance, exemptions, and webhooks - are delivered as Sphere platform
+    features and via prebuilt connectors; they do not have a dedicated,
+    individually documented public REST surface as of the review date, and have
+    been documented honestly as such rather than fabricated.
+  authentication:
+    scheme: apiKey
+    header: X-API-KEY
+    note: >-
+      Sphere uses an X-API-KEY header, not a Bearer token. The task brief
+      anticipated Bearer auth; the real documented mechanism is X-API-KEY and
+      has been modeled accordingly to avoid fabrication.
+  baseURL: https://server.getsphere.com
+  endpointsConfirmedRest:
+  - POST https://server.getsphere.com/tax_api/calculate_tax
+  - POST https://server.getsphere.com/tax_api/exports
+  - GET  https://server.getsphere.com/tax_api/exports/{job_id}
+  - POST https://server.getsphere.com/tax_api/exports/{job_id}/cancel
+  capabilitiesWithoutDedicatedPublicRest:
+  - Nexus Monitoring (platform feature: https://docs.getsphere.com/features/monitoring)
+  - Registration (platform feature: https://docs.getsphere.com/features/registration)
+  - Filing and Remittance (platform feature: https://docs.getsphere.com/features/filing-and-remittance)
+  - Exemptions (applied within the calculation engine)
+  - Webhooks (advertised for integrations; no public event catalog or subscription endpoints documented)
+  githubOrganization:
+    present: false
+    note: No public Sphere (getsphere.com) GitHub organization was found at github.com/getsphere, /get-sphere, or /sphere-tax (all 404). GitHubOrganization common property omitted from apis.yml.
+sources:
+- url: https://docs.getsphere.com/
+  type: Documentation
+  note: Knowledge base; lists Monitoring, Registration, Calculation, Filing/Remittance, Integrations.
+- url: https://docs.getsphere.com/features/integrations/api
+  type: APIReference
+  note: API overview; X-API-KEY authentication; call the Sphere tax engine from billing/checkout flows.
+- url: https://docs.getsphere.com/features/integrations/api/tax-calculation
+  type: Documentation
+  note: Confirms base URL server.getsphere.com, POST /tax_api/calculate_tax, request and response schemas, example payloads.
+- url: https://docs.getsphere.com/features/reports/transaction-export
+  type: Documentation
+  note: Transaction export feature; backed by the /tax_api/exports job endpoints.
+- url: https://www.getsphere.com/pricing
+  type: Pricing
+  note: Flat fee per region per month (Starter), custom Growth pricing, 50,000-transaction overage, pass-through registration fees.
+- url: https://www.ycombinator.com/companies/sphere
+  type: Profile
+  note: Confirms AI-powered sales tax, VAT and GST compliance positioning.
+actions:
+  apisYmlCreated: true
+  openapiCreated: true
+  openapiNote: >-
+    openapi/sphere-tax-openapi.yml models only the four publicly documented REST
+    endpoints with real request/response schemas; api_key (X-API-KEY) security
+    scheme. No endpoints were fabricated for monitoring, registration, filing,
+    exemptions, or webhooks.
+  reconciled: false
+  reason: >-
+    Growth pricing is sales-led/custom and exact rate-limit values are not
+    published, so plans, rate-limits, and finops artifacts are marked
+    reconciled: false.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

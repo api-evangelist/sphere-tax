@@ -1,0 +1,278 @@
+{
+  "item": [
+    {
+      "id": "a1f2c3d4-1111-4a2b-8c3d-000000000001",
+      "name": "Tax Calculation",
+      "description": {
+        "content": "Real-time indirect tax calculation for billing and checkout flows.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a1f2c3d4-1111-4a2b-8c3d-000000000002",
+          "name": "Calculate tax for a transaction.",
+          "request": {
+            "name": "Calculate tax for a transaction.",
+            "description": {
+              "content": "Calculates indirect tax (sales tax, VAT, GST) for one or more line items against a customer address and currency. Returns per-line tax amounts, taxable amounts, a tax rate breakdown, and a unique calculation id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tax_api",
+                "calculate_tax"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"cus_RQx5PQDFSMH6Ku\",\n  \"customer_address\": {\n    \"address1\": \"Investors Boulevard\",\n    \"city\": \"Myrtle Beach\",\n    \"state\": \"SC\",\n    \"postal_code\": \"29579\",\n    \"country\": \"US\"\n  },\n  \"line_items\": [\n    {\n      \"amount\": 10000,\n      \"product_id\": \"prod_RArEhwhXLfX5jF\",\n      \"discount_amount\": 0,\n      \"tax_inclusive\": false\n    }\n  ],\n  \"currency\": \"usd\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a1f2c3d4-1111-4a2b-8c3d-000000000003",
+              "name": "Tax calculated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tax_api",
+                    "calculate_tax"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Tax calculated successfully\",\n  \"data\": {\n    \"lines\": [\n      {\n        \"id\": \"prod_RArEhwhXLfX5jF\",\n        \"tax_amounts\": [\n          {\n            \"amount\": 900,\n            \"taxable_amount\": 10000,\n            \"tax_rate\": {\n              \"percentage\": 9.0,\n              \"inclusive\": false,\n              \"display_name\": \"Sales Tax\",\n              \"jurisdiction\": \"South Carolina\",\n              \"country\": \"US\",\n              \"state\": \"SC\",\n              \"tax_type\": \"sales_tax\"\n            }\n          }\n        ]\n      }\n    ],\n    \"sphere_tax_calculation_id\": \"cfd1e35a-ccb8-4bf1-86ed-49e332be220b\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "a1f2c3d4-1111-4a2b-8c3d-000000000010",
+      "name": "Transactions Export",
+      "description": {
+        "content": "Asynchronous export of transaction data for reporting and reconciliation.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a1f2c3d4-1111-4a2b-8c3d-000000000011",
+          "name": "Create a transaction export job.",
+          "request": {
+            "name": "Create a transaction export job.",
+            "description": {
+              "content": "Initiates an asynchronous export job over transaction data. Returns a job identifier used to poll for status and retrieve the resulting download.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tax_api",
+                "exports"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a1f2c3d4-1111-4a2b-8c3d-000000000012",
+          "name": "Retrieve a transaction export job.",
+          "request": {
+            "name": "Retrieve a transaction export job.",
+            "description": {
+              "content": "Retrieves the status of an export job and, once complete, the download URL for the exported transaction data.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tax_api",
+                "exports",
+                ":job_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "job_id",
+                  "value": "",
+                  "description": "The identifier of the export job to retrieve."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a1f2c3d4-1111-4a2b-8c3d-000000000013",
+          "name": "Cancel a transaction export job.",
+          "request": {
+            "name": "Cancel a transaction export job.",
+            "description": {
+              "content": "Terminates a running or queued export job.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tax_api",
+                "exports",
+                ":job_id",
+                "cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "job_id",
+                  "value": "",
+                  "description": "The identifier of the export job to cancel."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://server.getsphere.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-KEY"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a1f2c3d4-1111-4a2b-8c3d-000000000000",
+    "name": "Sphere Tax API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Specification of the Sphere indirect tax compliance API.\n\nAuthentication: X-API-KEY header against https://server.getsphere.com\n\nDocs: https://docs.getsphere.com/",
+      "type": "text/plain"
+    }
+  }
+}

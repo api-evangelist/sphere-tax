@@ -1,0 +1,259 @@
+openapi: 3.0.1
+info:
+  title: Sphere Tax API
+  description: >-
+    Specification of the Sphere indirect tax compliance API. Sphere exposes a
+    developer-first REST API for calculating sales tax, VAT, and GST inside
+    billing and checkout flows, and for exporting transaction data. Requests are
+    authenticated with an API key supplied in the X-API-KEY header. Only the
+    endpoints publicly documented at docs.getsphere.com are modeled here; other
+    Sphere capabilities (nexus monitoring, registration, filing and remittance,
+    exemptions, webhooks) are delivered as platform features and do not have a
+    documented public REST surface as of this writing.
+  termsOfService: https://www.getsphere.com/
+  contact:
+    name: Sphere Support
+    url: https://docs.getsphere.com/
+  version: '1.0'
+servers:
+  - url: https://server.getsphere.com
+paths:
+  /tax_api/calculate_tax:
+    post:
+      operationId: calculateTax
+      tags:
+        - Tax Calculation
+      summary: Calculate tax for a transaction.
+      description: >-
+        Calculates indirect tax (sales tax, VAT, GST) for one or more line
+        items against a customer address and currency. Returns per-line tax
+        amounts, taxable amounts, a tax rate breakdown (percentage,
+        jurisdiction, country, state, tax type), and a unique calculation id.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalculateTaxRequest'
+            example:
+              customer_id: cus_RQx5PQDFSMH6Ku
+              customer_address:
+                address1: Investors Boulevard
+                city: Myrtle Beach
+                state: SC
+                postal_code: '29579'
+                country: US
+              line_items:
+                - amount: 10000
+                  product_id: prod_RArEhwhXLfX5jF
+                  discount_amount: 0
+                  tax_inclusive: false
+              currency: usd
+      responses:
+        '200':
+          description: Tax calculated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculateTaxResponse'
+              example:
+                message: Tax calculated successfully
+                data:
+                  lines:
+                    - id: prod_RArEhwhXLfX5jF
+                      tax_amounts:
+                        - amount: 900
+                          taxable_amount: 10000
+                          tax_rate:
+                            percentage: 9.0
+                            inclusive: false
+                            display_name: Sales Tax
+                            jurisdiction: South Carolina
+                            country: US
+                            state: SC
+                            tax_type: sales_tax
+                  sphere_tax_calculation_id: cfd1e35a-ccb8-4bf1-86ed-49e332be220b
+        '401':
+          description: Missing or invalid API key.
+  /tax_api/exports:
+    post:
+      operationId: createTransactionExport
+      tags:
+        - Transactions Export
+      summary: Create a transaction export job.
+      description: >-
+        Initiates an asynchronous export job over transaction data for
+        reporting and reconciliation. Returns a job identifier used to poll for
+        status and retrieve the resulting download.
+      responses:
+        '200':
+          description: Export job created.
+        '401':
+          description: Missing or invalid API key.
+  /tax_api/exports/{job_id}:
+    get:
+      operationId: getTransactionExport
+      tags:
+        - Transactions Export
+      summary: Retrieve a transaction export job.
+      description: >-
+        Retrieves the status of an export job and, once complete, the download
+        URL for the exported transaction data.
+      parameters:
+        - name: job_id
+          in: path
+          required: true
+          description: The identifier of the export job to retrieve.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Export job status and download details.
+        '401':
+          description: Missing or invalid API key.
+        '404':
+          description: Export job not found.
+  /tax_api/exports/{job_id}/cancel:
+    post:
+      operationId: cancelTransactionExport
+      tags:
+        - Transactions Export
+      summary: Cancel a transaction export job.
+      description: Terminates a running or queued export job.
+      parameters:
+        - name: job_id
+          in: path
+          required: true
+          description: The identifier of the export job to cancel.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Export job cancelled.
+        '401':
+          description: Missing or invalid API key.
+        '404':
+          description: Export job not found.
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      description: Sphere API key supplied in the X-API-KEY request header.
+  schemas:
+    CalculateTaxRequest:
+      type: object
+      required:
+        - customer_address
+        - line_items
+        - currency
+      properties:
+        customer_id:
+          type: string
+          description: Optional billing platform customer identifier.
+        customer_address:
+          $ref: '#/components/schemas/CustomerAddress'
+        line_items:
+          type: array
+          description: One or more line items to calculate tax for.
+          items:
+            $ref: '#/components/schemas/LineItem'
+        currency:
+          type: string
+          description: ISO 4217 currency code, lowercase only (e.g. usd).
+    CustomerAddress:
+      type: object
+      required:
+        - country
+      properties:
+        address1:
+          type: string
+        address2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        postal_code:
+          type: string
+        country:
+          type: string
+          description: ISO 3166-1 alpha-2 country code.
+    LineItem:
+      type: object
+      required:
+        - amount
+      properties:
+        id:
+          type: string
+          description: Optional line item identifier.
+        amount:
+          type: integer
+          description: Line amount in the smallest currency unit (cents).
+        product_id:
+          type: string
+          description: Product identifier used for tax categorization.
+        discount_amount:
+          type: integer
+          description: Discount applied to the line, in cents.
+        tax_inclusive:
+          type: boolean
+          description: Whether the amount is tax inclusive.
+    CalculateTaxResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            lines:
+              type: array
+              items:
+                $ref: '#/components/schemas/TaxLine'
+            sphere_tax_calculation_id:
+              type: string
+              description: Unique identifier for this tax calculation.
+    TaxLine:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Line item or product identifier.
+        tax_amounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxAmount'
+    TaxAmount:
+      type: object
+      properties:
+        amount:
+          type: integer
+          description: Tax amount in cents.
+        taxable_amount:
+          type: integer
+          description: Taxable amount in cents.
+        tax_rate:
+          $ref: '#/components/schemas/TaxRate'
+    TaxRate:
+      type: object
+      properties:
+        percentage:
+          type: number
+          description: Tax rate percentage.
+        inclusive:
+          type: boolean
+        display_name:
+          type: string
+        jurisdiction:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+        tax_type:
+          type: string
+          description: Type of tax (e.g. sales_tax, vat, gst).
+security:
+  - api_key: []

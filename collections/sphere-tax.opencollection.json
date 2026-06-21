@@ -1,0 +1,104 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Sphere Tax API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "apikey": {
+        "key": "X-API-KEY",
+        "value": "{{apiKey}}",
+        "in": "header"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tax Calculation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Calculate tax for a transaction.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://server.getsphere.com/tax_api/calculate_tax",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"customer_id\": \"cus_RQx5PQDFSMH6Ku\",\n  \"customer_address\": {\n    \"address1\": \"Investors Boulevard\",\n    \"city\": \"Myrtle Beach\",\n    \"state\": \"SC\",\n    \"postal_code\": \"29579\",\n    \"country\": \"US\"\n  },\n  \"line_items\": [\n    {\n      \"amount\": 10000,\n      \"product_id\": \"prod_RArEhwhXLfX5jF\",\n      \"discount_amount\": 0,\n      \"tax_inclusive\": false\n    }\n  ],\n  \"currency\": \"usd\"\n}"
+            }
+          },
+          "docs": "Calculates indirect tax (sales tax, VAT, GST) for one or more line items against a customer address and currency. Returns per-line tax amounts, taxable amounts, a tax rate breakdown, and a unique calculation id."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Transactions Export",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a transaction export job.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://server.getsphere.com/tax_api/exports",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiates an asynchronous export job over transaction data. Returns a job identifier used to poll for status and retrieve the resulting download."
+        },
+        {
+          "info": {
+            "name": "Retrieve a transaction export job.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://server.getsphere.com/tax_api/exports/:job_id",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the export job to retrieve."
+              }
+            ]
+          },
+          "docs": "Retrieves the status of an export job and, once complete, the download URL for the exported transaction data."
+        },
+        {
+          "info": {
+            "name": "Cancel a transaction export job.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://server.getsphere.com/tax_api/exports/:job_id/cancel",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the export job to cancel."
+              }
+            ]
+          },
+          "docs": "Terminates a running or queued export job."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

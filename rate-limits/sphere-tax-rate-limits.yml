@@ -1,0 +1,50 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Sphere
+providerId: sphere-tax
+created: '2026-06-21'
+modified: '2026-06-21'
+reconciled: false
+tags:
+- Tax
+- Sales Tax
+- Compliance
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  Sphere's public documentation does not publish specific numeric rate limits
+  for its REST API (calculate_tax and transaction export endpoints). Billing is
+  organized around active regions and a per-transaction overage above 50,000
+  transactions rather than per-request quotas. Any throttling thresholds are not
+  reconciled in this artifact and should be confirmed with Sphere.
+notes: >-
+  No numeric RPM/TPM/quota values are documented publicly. Confirm throttling
+  behavior, retry guidance, and any per-account limits with Sphere support or an
+  account manager during reconciliation.
+sources:
+- https://docs.getsphere.com/
+- https://docs.getsphere.com/features/integrations/api
+- https://www.getsphere.com/pricing
+responseCodes:
+  throttled: 429
+limits:
+- name: API Request Limits
+  scope: account
+  metric: requests
+  limit: see provider documentation
+  notes: No numeric request rate limit is publicly documented for the Sphere API.
+- name: Transaction Volume
+  scope: account
+  metric: transactions
+  limit: 50000
+  notes: Soft commercial threshold; a flat per-transaction fee applies above 50,000 transactions across active regions. This is a billing tier, not a hard throttle.
+policies:
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter and honor Retry-After if a 429 is returned.
+- name: Region-Based Model
+  description: Commercial capacity is organized around active regions rather than per-request quotas.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
