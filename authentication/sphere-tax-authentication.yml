@@ -1,0 +1,16 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/sphere-tax-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: api_key
+  type: apiKey
+  in: header
+  parameter: X-API-KEY
+  description: Sphere API key supplied in the X-API-KEY request header.
+  sources:
+  - openapi/sphere-tax-openapi.yml

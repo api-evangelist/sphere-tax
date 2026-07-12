@@ -140,6 +140,10 @@ apis:
     are not detailed in the public API reference as of this writing; webhook delivery
     is configured via integrations and prebuilt connectors.
 common:
+- type: DomainSecurity
+  url: security/sphere-tax-domain-security.yml
+- type: Authentication
+  url: authentication/sphere-tax-authentication.yml
 - type: LinkedIn
   url: https://www.linkedin.com/company/getsphere
 - type: Website
@@ -152,6 +156,8 @@ common:
   url: rate-limits/sphere-tax-rate-limits.yml
 - type: FinOps
   url: finops/sphere-tax-finops.yml
+- url: https://www.getsphere.com/blog
+  type: Blog
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
