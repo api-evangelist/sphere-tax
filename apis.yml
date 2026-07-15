@@ -140,6 +140,8 @@ apis:
     are not detailed in the public API reference as of this writing; webhook delivery
     is configured via integrations and prebuilt connectors.
 common:
+- type: AgenticAccess
+  url: agentic-access/sphere-tax-agentic-access.yml
 - type: DomainSecurity
   url: security/sphere-tax-domain-security.yml
 - type: Authentication
