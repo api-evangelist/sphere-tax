@@ -1,0 +1,77 @@
+openapi: 3.0.1
+info:
+  title: Sphere Tax Tax Calculation Transactions Export API
+  description: Specification of the Sphere indirect tax compliance API. Sphere exposes a developer-first REST API for calculating sales tax, VAT, and GST inside billing and checkout flows, and for exporting transaction data. Requests are authenticated with an API key supplied in the X-API-KEY header. Only the endpoints publicly documented at docs.getsphere.com are modeled here; other Sphere capabilities (nexus monitoring, registration, filing and remittance, exemptions, webhooks) are delivered as platform features and do not have a documented public REST surface as of this writing.
+  termsOfService: https://www.getsphere.com/
+  contact:
+    name: Sphere Support
+    url: https://docs.getsphere.com/
+  version: '1.0'
+servers:
+- url: https://server.getsphere.com
+security:
+- api_key: []
+tags:
+- name: Transactions Export
+paths:
+  /tax_api/exports:
+    post:
+      operationId: createTransactionExport
+      tags:
+      - Transactions Export
+      summary: Create a transaction export job.
+      description: Initiates an asynchronous export job over transaction data for reporting and reconciliation. Returns a job identifier used to poll for status and retrieve the resulting download.
+      responses:
+        '200':
+          description: Export job created.
+        '401':
+          description: Missing or invalid API key.
+  /tax_api/exports/{job_id}:
+    get:
+      operationId: getTransactionExport
+      tags:
+      - Transactions Export
+      summary: Retrieve a transaction export job.
+      description: Retrieves the status of an export job and, once complete, the download URL for the exported transaction data.
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        description: The identifier of the export job to retrieve.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Export job status and download details.
+        '401':
+          description: Missing or invalid API key.
+        '404':
+          description: Export job not found.
+  /tax_api/exports/{job_id}/cancel:
+    post:
+      operationId: cancelTransactionExport
+      tags:
+      - Transactions Export
+      summary: Cancel a transaction export job.
+      description: Terminates a running or queued export job.
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        description: The identifier of the export job to cancel.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Export job cancelled.
+        '401':
+          description: Missing or invalid API key.
+        '404':
+          description: Export job not found.
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      description: Sphere API key supplied in the X-API-KEY request header.
