@@ -1,0 +1,16 @@
+{
+  "provider": "sphere-tax",
+  "sources": [
+    "sphere-tax-tax-calculation-api-openapi.yml",
+    "sphere-tax-transactions-export-api-openapi.yml"
+  ],
+  "outputs": [
+    "sphere-tax-tax-calculation-api-openapi.yml",
+    "sphere-tax-transactions-export-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
