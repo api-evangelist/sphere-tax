@@ -1,0 +1,198 @@
+{
+  "item": [
+    {
+      "id": "375de1a4-7b3d-4ac6-86a6-983197b7a180",
+      "name": "Tax Calculation",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0e21f0e1-0a9e-4368-890c-2622b12e3e27",
+          "name": "Calculate tax for a transaction.",
+          "request": {
+            "name": "Calculate tax for a transaction.",
+            "description": {
+              "content": "Calculates indirect tax (sales tax, VAT, GST) for one or more line items against a customer address and currency. Returns per-line tax amounts, taxable amounts, a tax rate breakdown (percentage, jurisdiction, country, state, tax type), and a unique calculation id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tax_api",
+                "calculate_tax"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_address\": {\n    \"country\": \"<string>\",\n    \"address1\": \"<string>\",\n    \"address2\": \"<string>\",\n    \"city\": \"<string>\",\n    \"state\": \"<string>\",\n    \"postal_code\": \"<string>\"\n  },\n  \"line_items\": [\n    {\n      \"amount\": \"<integer>\",\n      \"id\": \"<string>\",\n      \"product_id\": \"<string>\",\n      \"discount_amount\": \"<integer>\",\n      \"tax_inclusive\": \"<boolean>\"\n    },\n    {\n      \"amount\": \"<integer>\",\n      \"id\": \"<string>\",\n      \"product_id\": \"<string>\",\n      \"discount_amount\": \"<integer>\",\n      \"tax_inclusive\": \"<boolean>\"\n    }\n  ],\n  \"currency\": \"<string>\",\n  \"customer_id\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e319f81b-3dfb-4b13-8541-2bee837ce52a",
+              "name": "Tax calculated successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tax_api",
+                    "calculate_tax"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customer_id\": \"cus_RQx5PQDFSMH6Ku\",\n  \"customer_address\": {\n    \"address1\": \"Investors Boulevard\",\n    \"city\": \"Myrtle Beach\",\n    \"state\": \"SC\",\n    \"postal_code\": \"29579\",\n    \"country\": \"US\"\n  },\n  \"line_items\": [\n    {\n      \"amount\": 10000,\n      \"product_id\": \"prod_RArEhwhXLfX5jF\",\n      \"discount_amount\": 0,\n      \"tax_inclusive\": false\n    }\n  ],\n  \"currency\": \"usd\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Tax calculated successfully\",\n  \"data\": {\n    \"lines\": [\n      {\n        \"id\": \"prod_RArEhwhXLfX5jF\",\n        \"tax_amounts\": [\n          {\n            \"amount\": 900,\n            \"taxable_amount\": 10000,\n            \"tax_rate\": {\n              \"percentage\": 9,\n              \"inclusive\": false,\n              \"display_name\": \"Sales Tax\",\n              \"jurisdiction\": \"South Carolina\",\n              \"country\": \"US\",\n              \"state\": \"SC\",\n              \"tax_type\": \"sales_tax\"\n            }\n          }\n        ]\n      }\n    ],\n    \"sphere_tax_calculation_id\": \"cfd1e35a-ccb8-4bf1-86ed-49e332be220b\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dc19ef11-c9b9-4fd9-9af5-910b01a44651",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tax_api",
+                    "calculate_tax"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customer_id\": \"cus_RQx5PQDFSMH6Ku\",\n  \"customer_address\": {\n    \"address1\": \"Investors Boulevard\",\n    \"city\": \"Myrtle Beach\",\n    \"state\": \"SC\",\n    \"postal_code\": \"29579\",\n    \"country\": \"US\"\n  },\n  \"line_items\": [\n    {\n      \"amount\": 10000,\n      \"product_id\": \"prod_RArEhwhXLfX5jF\",\n      \"discount_amount\": 0,\n      \"tax_inclusive\": false\n    }\n  ],\n  \"currency\": \"usd\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://server.getsphere.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-KEY"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "f7e681b1-da67-47e0-8abf-adb12918dff5",
+    "name": "Sphere Tax Tax Calculation API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Specification of the Sphere indirect tax compliance API. Sphere exposes a developer-first REST API for calculating sales tax, VAT, and GST inside billing and checkout flows, and for exporting transaction data. Requests are authenticated with an API key supplied in the X-API-KEY header. Only the endpoints publicly documented at docs.getsphere.com are modeled here; other Sphere capabilities (nexus monitoring, registration, filing and remittance, exemptions, webhooks) are delivered as platform features and do not have a documented public REST surface as of this writing.\n\nContact Support:\n Name: Sphere Support",
+      "type": "text/plain"
+    }
+  }
+}

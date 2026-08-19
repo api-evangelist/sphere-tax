@@ -1,0 +1,41 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Sphere Tax Tax Calculation API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-KEY",
+      "value": "{{X-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tax Calculation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Calculate tax for a transaction.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://server.getsphere.com/tax_api/calculate_tax",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Calculates indirect tax (sales tax, VAT, GST) for one or more line items against a customer address and currency. Returns per-line tax amounts, taxable amounts, a tax rate breakdown (percentage, jurisdiction, country, state, tax type), and a unique calculation id."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

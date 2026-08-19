@@ -1,0 +1,75 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Sphere Tax Tax Calculation Transactions Export API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-KEY",
+      "value": "{{X-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transactions Export",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a transaction export job.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://server.getsphere.com/tax_api/exports"
+          },
+          "docs": "Initiates an asynchronous export job over transaction data for reporting and reconciliation. Returns a job identifier used to poll for status and retrieve the resulting download."
+        },
+        {
+          "info": {
+            "name": "Retrieve a transaction export job.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://server.getsphere.com/tax_api/exports/:job_id",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the export job to retrieve."
+              }
+            ]
+          },
+          "docs": "Retrieves the status of an export job and, once complete, the download URL for the exported transaction data."
+        },
+        {
+          "info": {
+            "name": "Cancel a transaction export job.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://server.getsphere.com/tax_api/exports/:job_id/cancel",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the export job to cancel."
+              }
+            ]
+          },
+          "docs": "Terminates a running or queued export job."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
