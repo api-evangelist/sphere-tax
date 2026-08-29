@@ -7,6 +7,18 @@ description: Sphere is a developer-first global indirect tax compliance platform
   calculation, and filing/remittance. Its REST API lets billing and checkout flows
   call the Sphere tax engine to calculate tax on transactions and export transaction
   data, authenticated with an X-API-KEY header.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: self-serve
