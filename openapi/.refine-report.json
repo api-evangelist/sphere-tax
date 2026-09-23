@@ -1,8 +1,7 @@
 {
   "provider": "sphere-tax",
   "sources": [
-    "sphere-tax-tax-calculation-api-openapi.yml",
-    "sphere-tax-transactions-export-api-openapi.yml"
+    "_original/sphere-tax-openapi.yml"
   ],
   "outputs": [
     "sphere-tax-tax-calculation-api-openapi.yml",
@@ -11,6 +10,15 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "sphere-tax-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "sphere-tax-openapi.yml: declared missing tag: Tax Calculation",
+    "sphere-tax-openapi.yml: declared missing tag: Transactions Export",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "sphere-tax-tax-calculation-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sphere-tax-transactions-export-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

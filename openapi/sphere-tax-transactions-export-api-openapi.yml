@@ -1,7 +1,7 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Sphere Tax Tax Calculation Transactions Export API
-  description: Specification of the Sphere indirect tax compliance API. Sphere exposes a developer-first REST API for calculating sales tax, VAT, and GST inside billing and checkout flows, and for exporting transaction data. Requests are authenticated with an API key supplied in the X-API-KEY header. Only the endpoints publicly documented at docs.getsphere.com are modeled here; other Sphere capabilities (nexus monitoring, registration, filing and remittance, exemptions, webhooks) are delivered as platform features and do not have a documented public REST surface as of this writing.
+  title: Sphere Tax Transactions Export API
+  description: Specification of the Sphere indirect tax compliance API.
   termsOfService: https://www.getsphere.com/
   contact:
     name: Sphere Support
@@ -19,7 +19,7 @@ paths:
       operationId: createTransactionExport
       tags:
       - Transactions Export
-      summary: Create a transaction export job.
+      summary: Create a transaction export job
       description: Initiates an asynchronous export job over transaction data for reporting and reconciliation. Returns a job identifier used to poll for status and retrieve the resulting download.
       responses:
         '200':
@@ -31,7 +31,7 @@ paths:
       operationId: getTransactionExport
       tags:
       - Transactions Export
-      summary: Retrieve a transaction export job.
+      summary: Retrieve a transaction export job
       description: Retrieves the status of an export job and, once complete, the download URL for the exported transaction data.
       parameters:
       - name: job_id
@@ -52,7 +52,7 @@ paths:
       operationId: cancelTransactionExport
       tags:
       - Transactions Export
-      summary: Cancel a transaction export job.
+      summary: Cancel a transaction export job
       description: Terminates a running or queued export job.
       parameters:
       - name: job_id
