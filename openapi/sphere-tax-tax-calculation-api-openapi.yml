@@ -69,35 +69,6 @@ paths:
           description: Missing or invalid API key.
 components:
   schemas:
-    TaxLine:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Line item or product identifier.
-        tax_amounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/TaxAmount'
-    TaxRate:
-      type: object
-      properties:
-        percentage:
-          type: number
-          description: Tax rate percentage.
-        inclusive:
-          type: boolean
-        display_name:
-          type: string
-        jurisdiction:
-          type: string
-        country:
-          type: string
-        state:
-          type: string
-        tax_type:
-          type: string
-          description: Type of tax (e.g. sales_tax, vat, gst).
     CalculateTaxRequest:
       type: object
       required:
@@ -118,6 +89,64 @@ components:
         currency:
           type: string
           description: ISO 4217 currency code, lowercase only (e.g. usd).
+    TaxLine:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Line item or product identifier.
+        tax_amounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxAmount'
+    CustomerAddress:
+      type: object
+      required:
+      - country
+      properties:
+        address1:
+          type: string
+        address2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        postal_code:
+          type: string
+        country:
+          type: string
+          description: ISO 3166-1 alpha-2 country code.
+    TaxAmount:
+      type: object
+      properties:
+        amount:
+          type: integer
+          description: Tax amount in cents.
+        taxable_amount:
+          type: integer
+          description: Taxable amount in cents.
+        tax_rate:
+          $ref: '#/components/schemas/TaxRate'
+    TaxRate:
+      type: object
+      properties:
+        percentage:
+          type: number
+          description: Tax rate percentage.
+        inclusive:
+          type: boolean
+        display_name:
+          type: string
+        jurisdiction:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+        tax_type:
+          type: string
+          description: Type of tax (e.g. sales_tax, vat, gst).
     LineItem:
       type: object
       required:
@@ -153,35 +182,6 @@ components:
             sphere_tax_calculation_id:
               type: string
               description: Unique identifier for this tax calculation.
-    CustomerAddress:
-      type: object
-      required:
-      - country
-      properties:
-        address1:
-          type: string
-        address2:
-          type: string
-        city:
-          type: string
-        state:
-          type: string
-        postal_code:
-          type: string
-        country:
-          type: string
-          description: ISO 3166-1 alpha-2 country code.
-    TaxAmount:
-      type: object
-      properties:
-        amount:
-          type: integer
-          description: Tax amount in cents.
-        taxable_amount:
-          type: integer
-          description: Taxable amount in cents.
-        tax_rate:
-          $ref: '#/components/schemas/TaxRate'
   securitySchemes:
     api_key:
       type: apiKey
