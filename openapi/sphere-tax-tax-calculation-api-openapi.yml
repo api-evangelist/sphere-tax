@@ -69,36 +69,21 @@ paths:
           description: Missing or invalid API key.
 components:
   schemas:
-    CalculateTaxRequest:
-      type: object
-      required:
-      - customer_address
-      - line_items
-      - currency
-      properties:
-        customer_id:
-          type: string
-          description: Optional billing platform customer identifier.
-        customer_address:
-          $ref: '#/components/schemas/CustomerAddress'
-        line_items:
-          type: array
-          description: One or more line items to calculate tax for.
-          items:
-            $ref: '#/components/schemas/LineItem'
-        currency:
-          type: string
-          description: ISO 4217 currency code, lowercase only (e.g. usd).
-    TaxLine:
+    CalculateTaxResponse:
       type: object
       properties:
-        id:
+        message:
           type: string
-          description: Line item or product identifier.
-        tax_amounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/TaxAmount'
+        data:
+          type: object
+          properties:
+            lines:
+              type: array
+              items:
+                $ref: '#/components/schemas/TaxLine'
+            sphere_tax_calculation_id:
+              type: string
+              description: Unique identifier for this tax calculation.
     CustomerAddress:
       type: object
       required:
@@ -128,6 +113,26 @@ components:
           description: Taxable amount in cents.
         tax_rate:
           $ref: '#/components/schemas/TaxRate'
+    CalculateTaxRequest:
+      type: object
+      required:
+      - customer_address
+      - line_items
+      - currency
+      properties:
+        customer_id:
+          type: string
+          description: Optional billing platform customer identifier.
+        customer_address:
+          $ref: '#/components/schemas/CustomerAddress'
+        line_items:
+          type: array
+          description: One or more line items to calculate tax for.
+          items:
+            $ref: '#/components/schemas/LineItem'
+        currency:
+          type: string
+          description: ISO 4217 currency code, lowercase only (e.g. usd).
     TaxRate:
       type: object
       properties:
@@ -167,21 +172,16 @@ components:
         tax_inclusive:
           type: boolean
           description: Whether the amount is tax inclusive.
-    CalculateTaxResponse:
+    TaxLine:
       type: object
       properties:
-        message:
+        id:
           type: string
-        data:
-          type: object
-          properties:
-            lines:
-              type: array
-              items:
-                $ref: '#/components/schemas/TaxLine'
-            sphere_tax_calculation_id:
-              type: string
-              description: Unique identifier for this tax calculation.
+          description: Line item or product identifier.
+        tax_amounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxAmount'
   securitySchemes:
     api_key:
       type: apiKey
