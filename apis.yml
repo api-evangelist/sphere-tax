@@ -113,6 +113,9 @@ apis:
   - type: Documentation
     url: https://docs.getsphere.com/features/integrations
 common:
+- type: CapabilityMap
+  url: capabilities/sphere-tax-capability-edges.yml
+  name: Sphere Business Capability Map
 - type: AgenticAccess
   url: agentic-access/sphere-tax-agentic-access.yml
 - type: DomainSecurity
