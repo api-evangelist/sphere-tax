@@ -69,39 +69,6 @@ paths:
           description: Missing or invalid API key.
 components:
   schemas:
-    CalculateTaxResponse:
-      type: object
-      properties:
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            lines:
-              type: array
-              items:
-                $ref: '#/components/schemas/TaxLine'
-            sphere_tax_calculation_id:
-              type: string
-              description: Unique identifier for this tax calculation.
-    CustomerAddress:
-      type: object
-      required:
-      - country
-      properties:
-        address1:
-          type: string
-        address2:
-          type: string
-        city:
-          type: string
-        state:
-          type: string
-        postal_code:
-          type: string
-        country:
-          type: string
-          description: ISO 3166-1 alpha-2 country code.
     TaxAmount:
       type: object
       properties:
@@ -152,6 +119,16 @@ components:
         tax_type:
           type: string
           description: Type of tax (e.g. sales_tax, vat, gst).
+    TaxLine:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Line item or product identifier.
+        tax_amounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxAmount'
     LineItem:
       type: object
       required:
@@ -172,16 +149,39 @@ components:
         tax_inclusive:
           type: boolean
           description: Whether the amount is tax inclusive.
-    TaxLine:
+    CustomerAddress:
+      type: object
+      required:
+      - country
+      properties:
+        address1:
+          type: string
+        address2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        postal_code:
+          type: string
+        country:
+          type: string
+          description: ISO 3166-1 alpha-2 country code.
+    CalculateTaxResponse:
       type: object
       properties:
-        id:
+        message:
           type: string
-          description: Line item or product identifier.
-        tax_amounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/TaxAmount'
+        data:
+          type: object
+          properties:
+            lines:
+              type: array
+              items:
+                $ref: '#/components/schemas/TaxLine'
+            sphere_tax_calculation_id:
+              type: string
+              description: Unique identifier for this tax calculation.
   securitySchemes:
     api_key:
       type: apiKey
